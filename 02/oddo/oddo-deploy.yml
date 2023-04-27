@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oddo
+  labels:
+    app: oddo
+  namespace: oddo-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oddo
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: oddo
+    spec:
+      containers:
+        - image: bitnami/odoo:16
+          imagePullPolicy: Always
+          name: oddo
+          ports:
+            - containerPort: 8069
+              protocol: TCP
+          env:
+            - name: ALLOW_EMPTY_PASSWORD
+              value: "yes"
+            - name: ODOO_DATABASE_HOST
+              value: "postgres"
+            - name: ODOO_DATABASE_PORT_NUMBER
+              value: "5432"
+            - name: ODOO_DATABASE_USER
+              value: "bn_oddo"
+            - name: ODOO_DATABASE_NAME
+              value: "bitnami_oddo"
+      volumes:
+        - name: postgres-storage
+          emptyDir: { }
