@@ -2,8 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: postgresql
-  labels:
-    app: postgresql
   namespace: oddo-demo
 spec:
   replicas: 1
@@ -16,23 +14,20 @@ spec:
         app: postgresql
     spec:
       containers:
-        - name: postgresql
-          image: bitnami/postgresql:15
+        - name: postgres
+          image: docker.io/bitnami/postgresql:15
           ports:
             - containerPort: 5432
-              protocol: TCP
           env:
-            - name: POSTGRES_DB
-              value: "bitnami_odoo"
+            - name: POSTGRESQL_DATABASE
+              value: "bitnami_oddo"
             - name: ALLOW_EMPTY_PASSWORD
-              value: "true"
-            - name: POSTGRES_USER
+              value: "yes"
+            - name: POSTGRESQL_USERNAME
               value: "bn_odoo"
-            - name: PGDATA
-              value: "/var/lib/postgresql/data/pgdata"
           volumeMounts:
             - name: postgres-storage
-              mountPath: /var/lib/postgresql/pgdata
+              mountPath: /bitnami/postgresql
       volumes:
         - name: postgres-storage
-          emptyDir: { }
+          emptyDir: {}
