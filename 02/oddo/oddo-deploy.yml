@@ -19,11 +19,10 @@ spec:
     spec:
       containers:
         - image: bitnami/odoo:16
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           name: oddo
           ports:
             - containerPort: 8069
-              protocol: TCP
           env:
             - name: ALLOW_EMPTY_PASSWORD
               value: "yes"
@@ -32,9 +31,4 @@ spec:
             - name: ODOO_DATABASE_PORT_NUMBER
               value: "5432"
             - name: ODOO_DATABASE_USER
-              value: "bn_oddo"
-            - name: ODOO_DATABASE_NAME
-              value: "bitnami_oddo"
-      volumes:
-        - name: postgres-storage
-          emptyDir: { }
+              value: "postgres"

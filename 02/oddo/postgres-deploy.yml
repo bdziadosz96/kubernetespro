@@ -20,7 +20,7 @@ spec:
             - containerPort: 5432
           env:
             - name: POSTGRESQL_DATABASE
-              value: "bitnami_oddo"
+              value: "postgres"
             - name: ALLOW_EMPTY_PASSWORD
               value: "yes"
             - name: POSTGRESQL_USERNAME
