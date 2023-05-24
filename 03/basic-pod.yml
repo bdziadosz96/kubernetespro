@@ -13,10 +13,10 @@ spec:
         - name: FIRSTNAME
           valueFrom:
             configMapKeyRef:
-              name: multimap
-              key: given
+              name: webapp-secret
+              key: username
         - name: LASTNAME
           valueFrom:
             configMapKeyRef:
-              name: multimap
-              key: family
+              name: webapp-secret
+              key: password
