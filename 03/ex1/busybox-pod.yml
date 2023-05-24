@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: busybox
+  namespace: busybox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: busybox
+  template:
+    metadata:
+      labels:
+        name: busybox
+    spec:
+      containers:
+        - name: ctr1
+          image: busybox
+          command: [ "/bin/sh", "-c", "watch -n 10 echo API_KEY: $(API_KEY) and $(MERCHANT_ID)" ]
+          env:
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: busybox-secret
+                  key: PAYMENT_GATEWAY_API_KEY
+            - name: MERCHANT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: busybox-config
+                  key: MERCHANT_ID
