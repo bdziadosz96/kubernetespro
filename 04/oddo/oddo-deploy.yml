@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oddo
+  labels:
+    app: oddo
+  namespace: oddo-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oddo
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: oddo
+    spec:
+      containers:
+        - image: bitnami/odoo:16
+          imagePullPolicy: IfNotPresent
+          name: oddo
+          ports:
+            - containerPort: 8069
+          env:
+            - name: ODOO_DATABASE_NAME
+              value: "k8smaestro"
+            - name: ODOO_DATABASE_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: oddo-config
+                  key: username
+            - name: ODOO_DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: oddo-secret
+                  key: DB_PASSWORD
+            - name: ODOO_DATABASE_HOST
+              value: "postgresql.oddo-demo.svc.cluster.local"
+            - name: ODOO_DATABASE_PORT_NUMBER
+              value: "5432"
